@@ -3,10 +3,28 @@
 	--sec-color: #226666;
 }
 
+body{
+	background: url(../images/BG.svg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
 h2{
 	font-size: 2rem !important;
 }
 
+ /* label focus color */
+.input-field input:focus + label {
+	color: var(--sec-color)!important;;
+}
+
+/* label underline focus color */
+.input-field input:focus {
+	border-bottom: 1px solid var(--sec-color)!important;;
+	box-shadow: 0 1px 0 0 var(--sec-color)!important;;
+}
 .start-hidden{
 	display: none;
 }
@@ -17,6 +35,12 @@ h2{
 	grid-gap: 10px;
 }
 
+p.title{
+	font-size: 1rem;
+	font-weight: 550;
+	margin-left: -25px;
+	margin-bottom: 25px;
+}
 
 .tit{
 	grid-column: auto;
@@ -52,13 +76,6 @@ a.brand-logo img{
 }
 
 
-body{
-	background: url(../images/BG.svg) no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
 
 .full-h {
 	width: 100%;

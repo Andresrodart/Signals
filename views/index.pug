@@ -1,15 +1,37 @@
 extends layout
 
 block content
-	.section
+	.section#main
 		.valign-wrapper.full-h
 			.wrapper
 				.tit
 					h2 ¿Cómo desea ingresar los datos?
 				.one
-					.inputSel(onclick='showMicrophone')
+					.inputSel(onclick='showMicrophone()')
 						img(src="../images/micBut.svg", alt="", srcset="")
 				.none
 				.two
-					.inputSel(onclick='showInput')
+					.inputSel(onclick='showInput()')
 						img(src="../images/micInput.svg", alt="", srcset="")
+	.section.start-hidden#User
+		.valign-wrapper.full-h
+			.wrapperOneCol
+				.tit
+					h2 Ingrese el conjunto de valores dicretos
+				.one
+					p.title Conjunto A
+					.input-field
+						input#setA.validate(placeholder='Ej = 1, 2, 3' type='text')
+						label(for='first_name') Conjunto de valores
+					.input-field
+						input#zeroA.validate(placeholder='Ej = 2' type='number')
+						label(for='zeroA') Indice del valor 0
+
+				.two
+					p.title Conjunto B
+					.input-field
+						input#setB.validate(placeholder='Ej = 1, 2, 3' type='text')
+						label(for='setB') Conjunto de valores
+					.input-field
+						input#zeroB.validate(placeholder='Ej = 2' type='number')
+						label(for='zeroB') Indice del valor 0
