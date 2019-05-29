@@ -1,0 +1,112 @@
+:root {
+	--main-color: #d40000;
+	--sec-color: #226666;
+}
+
+h2{
+	font-size: 2rem !important;
+}
+
+.start-hidden{
+	display: none;
+}
+
+.wrapper {
+	display: grid;
+	grid-template-columns: 80vw;
+	grid-gap: 10px;
+}
+
+
+.tit{
+	grid-column: auto;
+	grid-row: 1;
+	width: 50vw;
+	text-align: center;
+	margin: 0 50px 0 50px; 
+	
+}
+
+.one {
+	grid-column: auto;
+	grid-row: 2;
+}
+
+.two { 
+	grid-column: auto;
+	grid-row: 3;
+}
+
+a.brand-logo img{
+	max-height: 50px;
+	margin: .4rem 1px 1px 0;
+}
+
+.inputSel{
+	cursor: pointer;
+}
+
+.inputSel img{
+	height: auto;
+	width: 100%;
+}
+
+
+body{
+	background: url(../images/BG.svg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.full-h {
+	width: 100%;
+	padding: 3% 3%;
+	max-width: none;
+	height: 90vh;
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
+}
+
+.tit h1{
+	background: rgba(255, 255, 255, 0.8) /* Green background with 30% opacity */  
+}
+/* Only small */
+@media only screen and (max-width: 500px) {
+	.full-h{
+		height: auto;
+	}
+}
+/* Only for Big */
+@media only screen and (min-width: 500px) {
+	.wrapper {
+		grid-template-columns: 4fr 1fr 4fr;
+	}
+
+	.tit{
+		grid-column: 1/4;
+		grid-row: 1;
+		display: flex;
+		  justify-content: center;
+		align-items: center;
+	}
+	
+	.one {
+		grid-column: 1;
+		grid-row: 2;
+	}
+	
+	.two { 
+		grid-column: 3;
+		grid-row: 2;
+	}
+	
+}
+
+@media only screen and (min-width:1024px){
+	h2{
+		font-size: 4rem !important;
+	}
+}

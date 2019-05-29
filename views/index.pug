@@ -1,0 +1,15 @@
+extends layout
+
+block content
+	.section
+		.valign-wrapper.full-h
+			.wrapper
+				.tit
+					h2 ¿Cómo desea ingresar los datos?
+				.one
+					.inputSel(onclick='showMicrophone')
+						img(src="../images/micBut.svg", alt="", srcset="")
+				.none
+				.two
+					.inputSel(onclick='showInput')
+						img(src="../images/micInput.svg", alt="", srcset="")
