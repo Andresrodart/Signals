@@ -98,10 +98,31 @@ def subSeqs(a, b, lower, upper): #Funciona igual que la suma
 
 	return [newSeq, list(newSeq)[0], list(newSeq)[-1]]
 
+def desSeq(a, lower, upper, C): #Desplazamiento
+	newSeq, aux = {}, {}
+	if C == 0: #Si se desplaza 0, regresa la misma secuencia
+		return a
+	for i in range(lower - C, upper + 1 - C): #Se recorre la secuencia, aquí no contará cero agregados, i.e. cuando se desplaza más allá del tamaño
+		try: newSeq[i] = a[i + C] #Si existe la posición i + C, asignalo a la nueva secuencia
+		except: newSeq[i] = 0 #Si no, agrega cero
+	l = list(newSeq)[0] #Nuevo posicion inicial
+	u = list(newSeq)[-1] #Nuevo posicion final
+	if (l > 0 and u > 0): #Si creció de más de los positivos, agrega ceros faltantes
+		for i in range(0, list(newSeq)[0]): #Los ceros se anexan al final
+			newSeq[i] = 0
+		for j in sorted(newSeq): #Se acomdan (ordenan)
+			aux[j] = newSeq[j]
+		return aux
+	elif (l < 0 and u < 0): #Si creció de más de los negativos, agrega ceros faltantes
+		for i in range(u + 1, 0 + 1):
+			newSeq[i] = 0
+	return newSeq
+
 seq = createSeq('{1 2 3 4 (5) 6 7 8 9}')
 se2 = createSeq('{1 2 3 4 (-5) 6 7 8 9}')
 Mstr = toString(seq, -4, 4)
 resadd = addSeqs(seq, se2, -4, 4)
 ressub = subSeqs(seq, se2, -4, 4)
+resdes = desSeq(seq, -4, 4, 2)
 
-print(seq, se2, Mstr, resadd, ressub)
+print(seq, resdes)
