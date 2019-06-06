@@ -73,7 +73,15 @@ a.brand-logo img{
 	width: 100%;
 }
 
+.flowHorizontal{
+	display: flex;
+	align-items: center;
+  	justify-content: center;
+}
 
+.flowHorizontal p{
+	margin-right: 20px;
+}
 
 .full-h {
 	width: 100%;
@@ -81,8 +89,13 @@ a.brand-logo img{
 	max-width: none;
 	height: 90vh;
 	display: flex;
+	flex: 1; /* formerly flex: 1 0 auto; */
   	align-items: center;
   	justify-content: center;
+}
+
+.full-h.inline{
+  	align-items: baseline;
 }
 
 .tit h1{
@@ -98,13 +111,13 @@ a.brand-logo img{
 
 .wrapper {
 	display: grid;
-	grid-template-columns: 80vw;
+	grid-template-columns: auto;
 	grid-gap: 10px;
 }
 
 .wrapper_op {
 	display: grid;
-	grid-template-columns: 80vw;
+	grid-template-columns: auto;
 	grid-gap: 10px;
 }
 
@@ -142,13 +155,20 @@ a.brand-logo img{
 	}
 	
 	.tit_op{
-		grid-column: 1/4;
+		grid-column: 1;
 		grid-row: 1;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
-
+	.funSel{
+		grid-column: 2/4;
+		grid-row: 1;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		text-align: center;
+	}
 	.one_op{
 		grid-column: 1;
 		grid-row: 2;
@@ -170,6 +190,13 @@ a.brand-logo img{
 		justify-content: center;
 		flex-direction: column;
 		text-align: center;
+	}
+	.res_op{
+		grid-column: 1/4;
+		grid-row: 3;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 }
