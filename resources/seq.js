@@ -1,15 +1,17 @@
 function createSeq(strSeq) {
+	if(!strSeq)
+		return -1 
 	let flag = false //Bandera que verifica si hay solo ceros
 	let newSeq = {}
 	let searched = strSeq.match(/\([+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\)/) //Encuentra cero
 	if (searched == -1){ //No se especifico cero, , regresa seq vacia
 		newSeq[0] = 0
-		return newSeq
+		return newSeq;
 	}
 	zeroStr = searched[0] //Guarda cero
 	preSeq = strSeq.slice(1, -1).split(' ') //Elimina llaves
 	zeroIndex = preSeq.indexOf(zeroStr) //Desde donde se va a empezar la secuencia
-	j = -zeroIndex
+	j = -zeroIndex;
 
 	for (let index = 0; index < preSeq.length; index++) {
 		const i = preSeq[index];
@@ -54,30 +56,30 @@ function toString(preStr, l, u){
 	strSeq = '['; //Abre Corchete
 	for (let i = l; i < u + 1; i++) {
 		if (i == 0){ //Si es cero, lo marca
-			strSeq += ('(' + preStr[i] + ') ')
+			strSeq += ('(' + Math.round(preStr[i] * 100) / 100 + ') ')
 			continue;
 		}
-		strSeq += preStr[i] + ' ' //Si no, solo lo agrega con espacio
+		strSeq += Math.round(preStr[i] * 100) / 100 + ' ' //Si no, solo lo agrega con espacio
 	}
 	strSeq = strSeq.slice(0, strSeq.length - 1) + ']' //Cierra corchete	
 	return strSeq
 }
 
 function addSeqs(a, b, lower, upper){
-	newSeq = {}
-	flag = false
-	tmp = 0
+	newSeq = {};
+	flag = false;
+	tmp = 0;
 
 	//Suma uno a uno
-	for (let i = lower; i < upper + 1; i++) {
-		try {
+	for (let i = lower; i <= upper; i++) {
+		if(a[i]) {
 			tmp = a[i] //Si existe valor en el dictionario, asgina a en la posición i
-		}catch (error) {
+		}else{
 			tmp = 0 //No exite en el dictionario, asigna 0
 		}
-		try {
+		if(b[i]) {
 			tmp += b[i] //Si existe valor en el dictionario, suma con b en la posición i
-		} catch (error) {
+		} else {
 			tmp += 0 //No exite en el dictionario, suma con 0
 		}
 		if((!flag && tmp != 0) || i >= 0) //Omite ceros del lado negativo
@@ -85,7 +87,7 @@ function addSeqs(a, b, lower, upper){
 		if(flag) //Asgina valores
 			newSeq[i] = tmp;
 	}
-	flag = true
+	flag = true;
 	for (let i = upper; i > 0; i--) { //Elimina ceros que no se necesitan mostrar del lado positivo
 		if (flag && newSeq[i] != 0)
 			flag = false;
@@ -97,7 +99,7 @@ function addSeqs(a, b, lower, upper){
 	})[0]); //Nuevo posicion inicial
 	let upper2 = parseInt(Object.keys(newSeq).sort((a, b) => {
 		return parseInt(a) - parseInt(b);
-	}).pop()); //Nuevo posicion 
+	}).pop()); //Nuevo posicion
 	return [newSeq, lower2, upper2] //Regresa sequencia, posición inicial, posición final
 }
 
@@ -145,14 +147,14 @@ function mulSeqs(a, b, lower, upper){ //Funciona igual que la suma
 	tmp = 0
 
 	for (let i = lower; i < upper + 1; i++) {
-		try {
+		if(a[i]) {
 			tmp = a[i]
-		} catch (error) {
+		} else {
 			tmp = 0
 		}
-		try {
+		if(b[i]) {
 			tmp *= b[i]
-		} catch (error) {
+		} else {
 			tmp *= 0
 		}
 
@@ -228,9 +230,135 @@ function desSeq(a, lower, upper, C){ //Desplazamiento
 	return newSeq;
 }
 
-function conSeq(a, lowerA, upperA, b, lowerB, upperB){
-	// TO DO return a
+function deciSeq(a, lower, upper, K){ //Diezmación
+	let newSeq = {};
+	let flag = false;
+	let tmp = 0, aux = K;
+	
+	if (K < 0) K = -K; //Si es una constante negativa, primero hazlo como si fuera positivo
+	
+	for(let i = lower; i <= upper; i++){
+		if (a[i * K]) {
+			tmp = a[i * K]; //f(n) = f(nK)
+		} else {
+			tmp = 0; //Lo mismo, pero si no se muestra en la secuencia original, f(n) = f(nK) = 0
+		}
+
+		if((tmp != 0 && !flag) || i == 0) //Si hay ceros innecesarios antes en la parte negativa
+			flag = true;
+		if (flag) //Valores validos (para mostrar nada más)
+			newSeq[i] = tmp;
+	}
+	flag = true;
+	for(let i = upper; i > 0; i--){ //Recorriendo de derecha a izquierda (hasta el indice cero), eliminando ceros que no mostrar
+		try {
+			if(newSeq[i] != 0)
+				flag = false;
+			if(flag)
+				delete newSeq[i];
+		} catch (error) {
+			continue;
+		}
+	}
+	
+	let lower2 = parseInt(Object.keys(newSeq).sort((a, b) => {
+		return parseInt(a) - parseInt(b);
+	})[0]); //Nuevo posicion inicial
+	let upper2 = parseInt(Object.keys(newSeq).sort((a, b) => {
+		return parseInt(a) - parseInt(b);
+	}).pop()); //Nuevo posicion 
+	
+	if (aux < 0) //Si es una constante negativa, después regresa el refejo de la nueva secuencia
+		return negSeq(newSeq, lower2, upper2);
+		/*Esto es como si para f(n(-K)), donde K > 0
+		primero se hace f(nK) = g(n), y después g(-n)*/
+	return newSeq;
 }
+
+function inteSeq(a, lower, upper, K, iType) { // Interpolación
+	let newSeq = {};
+	let realIndex = lower; //Para "seguirle la pista" al elemento de la secuencia original
+	let newLower = lower * K; //Nuevo indice inferior contando las (k - 1) muestras agregadas entre cada muestra
+	let newUpper = upper * K; //Nuevo indice superior contando las (k - 1) muestras agregadas entre cada muestra
+	for(let i = newLower; i < newUpper + K; i++)
+		if(i % K) //Si es nuevo elemento
+			newSeq[i] = getNewElement(iType, a, realIndex - 1, K, newSeq, i); //iType decide que tipo de interpolación
+		else { //Si es elemento existente en la sequencia original
+			newSeq[i] = a[realIndex];
+			realIndex += 1;
+		}
+	return newSeq;
+}
+
+function getNewElement(iType, a, realIndex, K, newSeq, i) {
+	let tearedElement = 0;
+	if (iType == 'Z') //Interpolación a Cero
+		return 0;
+	else if (iType == 'S') //Interpolación a Escalon
+		return a[realIndex];
+	else if (iType == 'L') //Interpolación Lineal
+		if (!(Math.abs(a[realIndex]) / K)) { //Si los elementos a tomar no son los ultimos
+			tearedElement =  Math.abs(a[realIndex] - a[realIndex + 1]) / K; //Aplicando Formula: Ni +|i abs(Nf - Ni)/K
+			if (a[realIndex] > a[realIndex + 1]) //Condicion de Nf < Ni
+				return newSeq[i - 1]  - tearedElement;
+			else //Condicion de Nf > Ni
+				return newSeq[i - 1]  + tearedElement;
+		} else { //Si son los ultimos
+			tearedElement =  Math.abs(a[realIndex]) / K;
+			if (a[realIndex] > 0) //Condicion de Nf < Ni
+				return newSeq[i - 1]  - tearedElement;
+			else //Condicion de Nf > Ni
+				return newSeq[i - 1]  + tearedElement;
+		}
+}
+
+
+function lenSeq(lower, upper) {
+	return Math.abs(lower) + upper + 1;
+}
+
+function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
+	let newSeq = {}, listMul = [];
+	let newLower = lowerA + lowerB; //Nuevo indice inferior (propiedad)
+	let newUpper = upperA + upperB; //Nuevo indice superior (propiedad)
+
+	for(let i = lowerB; i <= upperB; i++){ //Multiplicando cada elemento de b por todos los de a, b[i] * (a0, a1, ... aN)
+		var tmp_ = [];
+		Object.keys(a).sort((a, b) => {
+			return parseInt(a) - parseInt(b);
+		}).forEach(Element => {
+			tmp_.push(b[i] * a[Element]);
+		})
+		listMul.push(tmp_); //Se guarda en una lista de listas
+	}
+
+	//Antes de sumar todas las listas, hay que recorrer cada lista n lugares correspondiente a su indice de b[i]
+	let auxSize = listMul.length;
+	for(let i = 0; i < auxSize; i++){//agregando espacios (ceros), como en el algoritmo de suma por columas
+		for(let j = 0; j < i; j++) //Espacios de la derecha
+			listMul[i].splice(0, 0, 0);
+		for(let j = 0; j < auxSize - i - 1; j++) //Espacios de izquierda
+			listMul[i].push(0);
+	}
+	
+	let maxSumSize = 0;
+	for(let index = 0; index < listMul.length; index++)
+		maxSumSize = (maxSumSize < listMul[index].length)? listMul[index].length:maxSumSize;
+	
+	let auxSeq = new Array(maxSumSize).fill(0);
+	
+	for(let item = 0; item < listMul.length; item++)
+		for(let index = 0; index < maxSumSize; index++)
+			auxSeq[index] += listMul[item][index]; //#Sumar todas las listas
+	
+	let indexList = 0;
+	for(let i = newLower; i <= newUpper; i++ ){//Agrego a la secuencia ya con indices
+		newSeq[i] = auxSeq[indexList];
+		indexList += 1;
+	}
+	return newSeq;
+}
+
 
 module.exports = {
     createSeq: createSeq,
@@ -241,6 +369,9 @@ module.exports = {
 	negSeq: negSeq,
 	ampSeq: ampSeq,
 	desSeq: desSeq,
+	deciSeq: deciSeq,
+	inteSeq: inteSeq,
+	lenSeq: lenSeq,
 	conSeq: conSeq
 };
 

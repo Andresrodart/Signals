@@ -45,9 +45,9 @@ def toString(preStr, l, u):
 	strSeq = '[' #Abre Corchete
 	for i in range(l, u + 1): #Toma todos los valores de la secuencia
 		if (i == 0): #Si es cero, lo marca
-			strSeq += ('(' + str(preStr[i]) + ') ')
+			strSeq += ('(' + str(round(preStr[i], 2)) + ') ')
 			continue
-		strSeq += (str(preStr[i]) + ' ') #Si no, solo lo agrega con espacio
+		strSeq += (str(round(preStr[i], 2)) + ' ') #Si no, solo lo agrega con espacio
 	strSeq = strSeq[:-1] + ']' #Cierra corchete
 
 	return strSeq
@@ -155,5 +155,89 @@ def desSeq(a, lower, upper, C): #Desplazamiento
 			newSeq[i] = 0
 	return newSeq
 
-def conSeq(a, lowerA, upperA, b, lowerB, upperB):
-	return a
+def deciSeq(a, lower, upper, K): #Diezmación
+	newSeq = {}
+	flag = False
+	tmp, aux = 0, K
+	if (K < 0): K = -K #Si es una constante negativa, primero hazlo como si fuera negativo
+	for i in range(lower, upper + 1):
+		try: tmp = a[i * K] #f(n) = f(nK)
+		except: tmp = 0 #Lo mismo, pero si no se muestra en la secuencia original, f(n) = f(nK) = 0
+		if((tmp != 0 and not flag) or i == 0): #Si hay ceros innecesarios antes en la parte negativa
+			flag = True
+		if (flag): #Valores validos (para mostrar nada más)
+			newSeq[i] = tmp
+
+	flag = True
+	for i in range(upper, 0, -1): #Recorriendo de derecha a izquierda (hasta el indice cero), eliminando ceros que no mostrar
+		try:
+			if(newSeq[i] != 0):
+				flag = False
+			if(flag):
+				del(newSeq[i])
+		except:
+			continue
+	if (aux < 0): #Si es una constante negativa, después regresa el refejo de la nueva secuencia
+		return negSeq(newSeq, list(newSeq)[0], list(newSeq)[-1])
+		#Esto es como si para f(n(-K)), donde K > 0
+		#primero se hace f(nK) = g(n), y después g(-n)
+	return newSeq
+
+def getNewElement(iType, a, realIndex, K, newSeq, i): #Obtiene nuevo elemento dependiendo del tipo de interpolación
+	tearedElement = 0
+	if iType == 'Z': #Interpolación a Cero
+		return 0
+	elif iType == 'S': #Interpolación a Escalon
+		return a[realIndex]
+	elif iType == 'L': #Interpolación Lineal
+		try: #Si los elementos a tomar no son los ultimos
+			tearedElement = abs(a[realIndex] - a[realIndex + 1]) / K #Aplicando Formula: Ni +|i abs(Nf - Ni)/K
+			if (a[realIndex] > a[realIndex + 1]): #Condicion de Nf < Ni
+				return newSeq[i - 1]  - tearedElement
+			else: #Condicion de Nf > Ni
+				return newSeq[i - 1]  + tearedElement
+		except: #Si son los ultimos
+			tearedElement = abs(a[realIndex]) / K
+			if (a[realIndex] > 0): #Condicion de Nf < Ni
+				return newSeq[i - 1]  - tearedElement
+			else: #Condicion de Nf > Ni
+				return newSeq[i - 1]  + tearedElement
+
+def inteSeq(a, lower, upper, K, iType): #Interpolación
+	newSeq = {}
+	realIndex = lower #Para "seguirle la pista" al elemento de la secuencia original
+	newLower = lower * K #Nuevo indice inferior contando las (k - 1) muestras agregadas entre cada muestra
+	newUpper = upper * K #Nuevo indice superior contando las (k - 1) muestras agregadas entre cada muestra
+	for i in range(newLower, newUpper + K):
+		if i % K: #Si es nuevo elemento
+			newSeq[i] = getNewElement(iType, a, realIndex - 1, K, newSeq, i) #iType decide que tipo de interpolación
+		else: #Si es elemento existente en la sequencia original
+			newSeq[i] = a[realIndex]
+			realIndex += 1
+	return newSeq
+
+def lenSeq(lower, upper): #Tamaño de Secuencia
+	return abs(lower) + upper + 1
+
+def conSeq(a, lowerA, upperA, b, lowerB, upperB): #Convolución
+	newSeq, listMul = {}, []
+	newLower = lowerA + lowerB #Nuevo indice inferior (propiedad)
+	newUpper = upperA + upperB #Nuevo indice superior (propiedad)
+
+	for i in range(lowerB, upperB + 1): #Multiplicando cada elemento de b por todos los de a, b[i] * (a0, a1, ... aN)
+		listMul.append([b[i] * a[j] for j in a.keys()]) #Se guarda en una lista de listas
+
+	#Antes de sumar todas las listas, hay que recorrer cada lista n lugares correspondiente a su indice de b[i]
+	auxSize = len(listMul)
+	for i in range(auxSize): #agregando espacios (ceros), como en el algoritmo de suma por columas
+		for j in range(i): #Espacios de la derecha
+			listMul[i].insert(0, 0)
+		for j in range(auxSize - i - 1): #Espacios de izquierda
+			listMul[i].append(0)
+	auxSeq = [sum(x) for x in zip(*listMul)] #Sumar todas las listas
+	print(auxSeq)
+	indexList = 0
+	for i in range(newLower, newUpper + 1): #Agrego a la secuencia ya con indices
+		newSeq[i] = auxSeq[indexList]
+		indexList += 1
+	return newSeq

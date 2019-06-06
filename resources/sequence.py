@@ -18,8 +18,19 @@ class Sequence:
 	def getString(self):
 		return sq.toString(self.sequence, self.lower, self.upper)
 
-	def conSequence(self, g): #Convolucion
-		res = sq.conSeq(self.sequence, self.lower, self.upper, g, g.lower, g.upper)
+	def getLength(self):
+		return lenSeq(self.lower, self.upper)#(abs(self.lower) + self.upper + 1)
+
+	def deciSequence(self, K): #Diezmación
+		res = sq.deciSeq(self.sequence, self.lower, self.upper, K)
+		return Sequence(sq.toString(res, list(res)[0], list(res)[-1]))
+
+	def inteSequence(self, K, inteType): #Interpolación
+		res = sq.inteSeq(self.sequence, self.lower, self.upper, K, inteType)
+		return Sequence(sq.toString(res, list(res)[0], list(res)[-1]))
+
+	def conSequence(self, other): #Convolucion
+		res = sq.conSeq(self.sequence, self.lower, self.upper, other.sequence, other.lower, other.upper)
 		return Sequence(sq.toString(res, list(res)[0], list(res)[-1]))
 
 	def __add__(self, other): #f(n) + g(n) ó f(n + C)
