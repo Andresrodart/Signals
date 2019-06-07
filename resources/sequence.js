@@ -21,7 +21,7 @@ class Sequence {
 	}
 
 	get getLength(){
-		return lenSeq(this.lower, this.upper) //(abs(this.lower) + this.upper + 1)
+		return sq.lenSeq(this.lower, this.upper) //(abs(this.lower) + this.upper + 1)
 	}
 	
 	conSequence(g){ //Convolucion

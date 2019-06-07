@@ -15,7 +15,7 @@ def main():
 	for i in range(len(sL)):
 		print(sN[i] + ' = ' + sL[i].getString())
 	print('\n')
-	print("a - a = " + (sL[0] - sL[0]).getString())
+	print("a - a = " + (sL[8] - sL[9]).getString())
 	print("a + b = " + (sL[0] + sL[1]).getString())
 	print("a + c = " + (sL[0] + sL[2]).getString())
 	print("a + d = " + (sL[0] + sL[3]).getString())

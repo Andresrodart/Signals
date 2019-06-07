@@ -110,14 +110,14 @@ function subSeqs(a, b, lower, upper){
 
 	//Suma uno a uno
 	for (let i = lower; i < upper + 1; i++) {
-		try {
+		if(a[i]) {
 			tmp = a[i] //Si existe valor en el dictionario, asgina a en la posición i
-		}catch (error) {
+		}else{
 			tmp = 0 //No exite en el dictionario, asigna 0
 		}
-		try {
+		if(b[i]) {
 			tmp -= b[i] //Si existe valor en el dictionario, suma con b en la posición i
-		} catch (error) {
+		} else {
 			tmp -= 0 //No exite en el dictionario, suma con 0
 		}
 		if((!flag && tmp != 0) || i >= 0) //Omite ceros del lado negativo
@@ -330,8 +330,9 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 			tmp_.push(b[i] * a[Element]);
 		})
 		listMul.push(tmp_); //Se guarda en una lista de listas
-	}
-
+	}	
+	listMul.reverse();
+	
 	//Antes de sumar todas las listas, hay que recorrer cada lista n lugares correspondiente a su indice de b[i]
 	let auxSize = listMul.length;
 	for(let i = 0; i < auxSize; i++){//agregando espacios (ceros), como en el algoritmo de suma por columas
@@ -346,7 +347,6 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 		maxSumSize = (maxSumSize < listMul[index].length)? listMul[index].length:maxSumSize;
 	
 	let auxSeq = new Array(maxSumSize).fill(0);
-	
 	for(let item = 0; item < listMul.length; item++)
 		for(let index = 0; index < maxSumSize; index++)
 			auxSeq[index] += listMul[item][index]; //#Sumar todas las listas

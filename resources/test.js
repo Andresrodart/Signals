@@ -19,7 +19,7 @@ for (let index = 0; index < sL.length; index++)
 	console.log(sN[index] + ' = ' + sL[index].getString);
 	
 console.log('\n')
-console.log("a - a = " + (sL[0].sub(sL[0])).getString);
+console.log("a - a = " + (sL[8].sub(sL[9])).getString);
 console.log("a + b = " + (sL[0].add(sL[1])).getString)
 console.log("a + c = " + (sL[0].add(sL[2])).getString)
 console.log("a + d = " + (sL[0].add(sL[3])).getString)

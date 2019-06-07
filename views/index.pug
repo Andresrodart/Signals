@@ -14,49 +14,87 @@ block content
 					.inputSel(onclick='showInput()')
 						img(src="../images/micInput.svg", alt="", srcset="")
 	.section.start-hidden#User
-		.valign-wrapper.full-h
+		.valign-wrapper.full-h.inline
 			.wrapper_op
 				.tit_op
 					h2 Ingrese el conjunto de valores dicretos
+				.funSel
+					.switch
+							label
+								| f(n)
+								input(type='checkbox' id='fnSelector')
+								span.lever
+								| g(n)
 				.one_op
 					p.title Conjunto A
 					.input-field
-						input#setA.validate(placeholder='Ej = {1 2 3 4 (5) 6 7 8 9}' type='text')
-						label(for='first_name') Conjunto de valores
+						input.validate(placeholder='Ej = {1 2 3 4 (5) 6 7 8 9}' type='text' id='fn')
+						label(for='fn') Conjunto de valores
 					.input-field
 						.switch
 							label
 								| ¿Es periódica?  No
-								input(type='checkbox')
+								input(type='checkbox' id='perioA')
 								span.lever
 								|       Sí
 					p.title Conjunto B
 					.input-field
-						input#setB.validate(placeholder='Ej = {1 2 3 4 (5) 6 7 8 9}' type='text')
-						label(for='setB') Conjunto de valores
+						input.validate(placeholder='Ej = {1 2 3 4 (5) 6 7 8 9}' type='text' id='gn')
+						label(for='gn') Conjunto de valores
 					.input-field
 						.switch#periodica
 							label
 								| ¿Es periódica?  No
-								input(type='checkbox')
+								input(type='checkbox' id='perioB')
 								span.lever
 								| Sí
+					p.title Valor de K
+					.input-field
+						input.validate(placeholder='Ej = 2' type='number' id='k')
+						label(for='k') Para la función fn o gn según se elija en el siwtch de arriba
+					.input-field
+						.switch#periodica
+							label
+								| ¿Es periódica?  No
+								input(type='checkbox' id='perioB')
+								span.lever
+								| Sí
+					p.title Tipo de interpolación
+						form.flowHorizontal#inteTypye(onchange='typeInter()')
+							p 
+								label
+									input.with-gap(name='group1' type='radio' checked='' value ='S' )
+									span Escalón
+							
+							p 
+								label
+									input.with-gap(name='group1' type='radio' value='Z')
+									span Zero
+							p
+								label
+									input.with-gap(name='group1' type='radio' value='L')
+									span Lineal
+
 				.options_op
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='suma()')
 						img(src="../images/suma.svg", alt="", srcset="")
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='resta()')
 						img(src="../images/resta.svg", alt="", srcset="")
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='mul()')
 						img(src="../images/mul.svg", alt="", srcset="")
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='convol()')
 						img(src="../images/convol.svg", alt="", srcset="")
 				.options_o2
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='despl()')
 						img(src="../images/despl.svg", alt="", srcset="")
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='ampl()')
 						img(src="../images/ampl.svg", alt="", srcset="")
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='neq()')
+						img(src="../images/neq.svg", alt="", srcset="")
+					.inputSel(onclick='diez()')
 						img(src="../images/diez.svg", alt="", srcset="")
-					.inputSel(onclick='showMicrophone()')
+					.inputSel(onclick='inter()')
 						img(src="../images/inter.svg", alt="", srcset="")
-				
+				.res_op
+					h5#respuesta
+		#plot(style="width:80vw;height:50vh;")
