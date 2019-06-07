@@ -81,6 +81,7 @@ a.brand-logo img{
 .mic img{
 	height: auto;
 	width: 20vw;
+	min-width: 144px;
 }
 
 .flowHorizontal{
@@ -136,6 +137,20 @@ a.brand-logo img{
 	grid-template-columns: 80vw;
 	grid-gap: 10px;
 }
+
+.mic{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.options_mic{
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+}
+
 
 .one_op{
 	padding: 32px;
