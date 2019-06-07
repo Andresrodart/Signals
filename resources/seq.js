@@ -52,8 +52,10 @@ function createSeq(strSeq) {
 	return newSeq
 }
 
-function toString(preStr, l, u){
+function toString(preStr, l, u, periodic){
 	strSeq = '['; //Abre Corchete
+	if (periodic)
+		strSeq += '...';
 	for (let i = l; i < u + 1; i++) {
 		if (i == 0){ //Si es cero, lo marca
 			strSeq += ('(' + Math.round(preStr[i] * 100) / 100 + ') ')
@@ -61,7 +63,7 @@ function toString(preStr, l, u){
 		}
 		strSeq += Math.round(preStr[i] * 100) / 100 + ' ' //Si no, solo lo agrega con espacio
 	}
-	strSeq = strSeq.slice(0, strSeq.length - 1) + ']' //Cierra corchete	
+	strSeq = strSeq.slice(0, strSeq.length - 1) + ((periodic)? '...':'') + ']' //Cierra corchete	
 	return strSeq
 }
 
@@ -110,9 +112,9 @@ function subSeqs(a, b, lower, upper){
 
 	//Suma uno a uno
 	for (let i = lower; i < upper + 1; i++) {
-		if(a[i]) {
+		if (a[i]) {
 			tmp = a[i] //Si existe valor en el dictionario, asgina a en la posición i
-		}else{
+		}else {
 			tmp = 0 //No exite en el dictionario, asigna 0
 		}
 		if(b[i]) {
@@ -330,26 +332,26 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 			tmp_.push(b[i] * a[Element]);
 		})
 		listMul.push(tmp_); //Se guarda en una lista de listas
-	}	
-	listMul.reverse();
-	
+	}
+	listMul = listMul.reverse()
 	//Antes de sumar todas las listas, hay que recorrer cada lista n lugares correspondiente a su indice de b[i]
 	let auxSize = listMul.length;
 	for(let i = 0; i < auxSize; i++){//agregando espacios (ceros), como en el algoritmo de suma por columas
 		for(let j = 0; j < i; j++) //Espacios de la derecha
-			listMul[i].splice(0, 0, 0);
+		listMul[i].splice(0, 0, 0);
 		for(let j = 0; j < auxSize - i - 1; j++) //Espacios de izquierda
-			listMul[i].push(0);
+		listMul[i].push(0);
 	}
-	
+
 	let maxSumSize = 0;
 	for(let index = 0; index < listMul.length; index++)
-		maxSumSize = (maxSumSize < listMul[index].length)? listMul[index].length:maxSumSize;
+	maxSumSize = (maxSumSize < listMul[index].length)? listMul[index].length:maxSumSize;
 	
 	let auxSeq = new Array(maxSumSize).fill(0);
+	
 	for(let item = 0; item < listMul.length; item++)
-		for(let index = 0; index < maxSumSize; index++)
-			auxSeq[index] += listMul[item][index]; //#Sumar todas las listas
+	for(let index = 0; index < maxSumSize; index++)
+	auxSeq[index] += listMul[item][index]; //#Sumar todas las listas
 	
 	let indexList = 0;
 	for(let i = newLower; i <= newUpper; i++ ){//Agrego a la secuencia ya con indices
@@ -359,6 +361,31 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 	return newSeq;
 }
 
+function SumConperiodica(seq, fn, gn) {
+	let tem_ = null;
+	let indexZero = Math.abs(seq.lower);
+	let indexAux = 0, topIndex = Math.min(fn, gn);
+	tem_ = new Array(topIndex).fill(0);
+	for (let index = seq.lower; index <= seq.upper; index++) {
+		tem_[indexAux++] += seq.sequence[index];
+		indexAux = (indexAux >= topIndex)? 0: indexAux;
+	}
+	tem_[indexZero] = '(' + tem_[indexZero] + ')';
+	return [('{' + tem_.join(' ') + '}'), seq.lower, topIndex];
+}
+
+function SumConCircular(seq, fn, gn) {
+	let tem_ = null;
+	let indexZero = Math.abs(seq.lower);
+	let indexAux = 0, topIndex = Math.max(fn, gn);
+	tem_ = new Array(topIndex).fill(0);
+	for (let index = seq.lower; index <= seq.upper; index++) {
+		tem_[indexAux++] += seq.sequence[index];
+		indexAux = (indexAux >= topIndex)? 0: indexAux;
+	}
+	tem_[indexZero] = '(' + tem_[indexZero] + ')';
+	return [('{' + tem_.join(' ') + '}'), seq.lower, topIndex];
+}
 
 module.exports = {
     createSeq: createSeq,
@@ -372,7 +399,9 @@ module.exports = {
 	deciSeq: deciSeq,
 	inteSeq: inteSeq,
 	lenSeq: lenSeq,
-	conSeq: conSeq
+	conSeq: conSeq,
+	SumConperiodica: SumConperiodica,
+	SumConCircular: SumConCircular
 };
 
 // seq = createSeq('{1 2 3 4 (5) 6 7 8 9}');

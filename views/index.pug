@@ -13,6 +13,7 @@ block content
 				.two
 					.inputSel(onclick='showInput()')
 						img(src="../images/micInput.svg", alt="", srcset="")
+	
 	.section.start-hidden#User
 		.valign-wrapper.full-h.inline
 			.wrapper_op
@@ -97,4 +98,18 @@ block content
 						img(src="../images/inter.svg", alt="", srcset="")
 				.res_op
 					h5#respuesta
-		#plot(style="width:80vw;height:50vh;")
+				#plot.plot()
+
+	.section.start-hidden#Mic
+		.valign-wrapper.full-h.inline
+			.wrapper_mic
+				.tit_mic
+					h2 Da click al icono para iniciar a grabar
+				.mic
+					.inputSel(onclick='startRecording()')
+						img(src="../images/micBut.svg", alt="", srcset="")
+				.options_mic
+					.inputSel(onclick='diezMic()')
+						img(src="../images/diez.svg", alt="", srcset="")
+					.inputSel(onclick='interMic()')
+						img(src="../images/inter.svg", alt="", srcset="")

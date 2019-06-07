@@ -73,6 +73,11 @@ a.brand-logo img{
 	width: 100%;
 }
 
+.mic img{
+	height: auto;
+	width: 20vw;
+}
+
 .flowHorizontal{
 	display: flex;
 	align-items: center;
@@ -118,6 +123,12 @@ a.brand-logo img{
 .wrapper_op {
 	display: grid;
 	grid-template-columns: auto;
+	grid-gap: 10px;
+}
+
+.wrapper_mic {
+	display: grid;
+	grid-template-columns: 80vw;
 	grid-gap: 10px;
 }
 
@@ -197,6 +208,43 @@ a.brand-logo img{
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+	
+	.plot{
+		grid-column: 1/4;
+		grid-row: 4;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.wrapper_mic {
+		grid-template-columns: 40vw 10vw;
+	}
+
+	.tit_mic{
+		grid-column: 1/4;
+		grid-row: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.mic{
+		grid-column: 1;
+		grid-row: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.options_mic{
+		grid-column: 2;
+		grid-row: 2;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		text-align: center;
 	}
 
 }

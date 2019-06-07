@@ -2,8 +2,9 @@
 const sq = require('./seq')
 
 class Sequence {
-	constructor(string) {
+	constructor(string, periodic = false) {
 		this.sequence = sq.createSeq(string);
+		this.periodic = periodic;
 		this.lower =  parseInt(Object.keys(this.sequence).sort((a, b) => {
 			return parseInt(a) - parseInt(b);
 		})[0]);
@@ -13,11 +14,11 @@ class Sequence {
 	}
 
 	get getSequence(){
-		return this.sequence
+		return this.sequence;
 	}
 
 	get getString(){
-		return sq.toString(this.sequence, this.lower, this.upper)
+		return sq.toString(this.sequence, this.lower, this.upper, this.periodic)
 	}
 
 	get getLength(){
@@ -26,7 +27,13 @@ class Sequence {
 	
 	conSequence(g){ //Convolucion
 		let res = sq.conSeq(this.sequence, this.lower, this.upper, g.sequence, g.lower, g.upper);
-		return new Sequence(sq.toString(res, this.getLower(res), this.getUpper(res)))
+		res = new Sequence(sq.toString(res, this.getLower(res), this.getUpper(res)));
+		if (this.periodic && g.periodic)
+			return new Sequence(sq.SumConCircular(res, this.getLength, g.getLength)[0]);
+		else if(this.periodic || g.periodic)
+			return new Sequence(sq.SumConperiodica(res, this.getLength, g.getLength)[0]);
+		else
+			return res;
 	}
 	
 	deciSequence(K){ //#Diezmación
