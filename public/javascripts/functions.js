@@ -4,6 +4,10 @@ var interType = 'S';
 var audio;
 var sound, mySound;
 var soundFile;
+const readyToRecord = false;
+var context;
+  
+
 function setup(){// create an audio in
 	mic = new p5.AudioIn();
 
@@ -261,17 +265,22 @@ function neqMic() {
 }
 
 function startRecording(){
+	context = getAudioContext()
 	document.getElementById('startRecording').src = '../images/micButU.svg'
 	document.getElementById('playRecording').src = '../images/PlayU.svg'
-		
-	recorder.record(soundFile);
-	
-	setTimeout(() => {
-		recorder.stop();
-		alert('Se acabo de grabar');
-		document.getElementById('startRecording').src = '../images/micBut.svg';
-		document.getElementById('playRecording').src = '../images/Play.svg';
-    }, 5000);
+	context.resume().then(() => {
+		recorder.record(soundFile, 5, ()=>{
+			alert('Se acabo de grabar');
+			document.getElementById('startRecording').src = '../images/micBut.svg';
+			document.getElementById('playRecording').src = '../images/Play.svg';
+		});
+		console.log('Playback resumed successfully');
+	  });
+	console.log(soundFile)
+	if(soundFile)
+	  i = 0;
+	else
+		alert('No se puede grabar aun');
 }
 
 function playRecording() {
