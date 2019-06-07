@@ -28,11 +28,14 @@ class Sequence {
 	conSequence(g){ //Convolucion
 		let res = sq.conSeq(this.sequence, this.lower, this.upper, g.sequence, g.lower, g.upper);
 		res = new Sequence(sq.toString(res, this.getLower(res), this.getUpper(res)));
+		console.log(res)
 		if (this.periodic && g.periodic)
 			return new Sequence(sq.SumConCircular(res, this.getLength, g.getLength)[0]);
-		else if(this.periodic || g.periodic)
-			return new Sequence(sq.SumConperiodica(res, this.getLength, g.getLength)[0]);
-		else
+		else if(this.periodic || g.periodic){
+			opt =  new Sequence(sq.SumConperiodica(res, this.getLength, g.getLength)[0]);
+			console.log(opt)
+			return opt
+		}else
 			return res;
 	}
 	

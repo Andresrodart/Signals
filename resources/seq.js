@@ -335,7 +335,9 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 		})
 		listMul.push(tmp_); //Se guarda en una lista de listas
 	}
-	listMul = listMul.reverse()
+	//listMul = listMul.reverse()
+	console.log(listMul)
+
 	//Antes de sumar todas las listas, hay que recorrer cada lista n lugares correspondiente a su indice de b[i]
 	let auxSize = listMul.length;
 	for(let i = 0; i < auxSize; i++){//agregando espacios (ceros), como en el algoritmo de suma por columas
@@ -366,13 +368,15 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 function SumConperiodica(seq, fn, gn) {
 	let tem_ = null;
 	let indexZero = Math.abs(seq.lower);
-	let indexAux = 0, topIndex = Math.min(fn, gn);
+	let indexAux = 0, topIndex = Math.max(fn, gn);
 	tem_ = new Array(topIndex).fill(0);
 	for (let index = seq.lower; index <= seq.upper; index++) {
 		tem_[indexAux++] += seq.sequence[index];
 		indexAux = (indexAux >= topIndex)? 0: indexAux;
 	}
 	tem_[indexZero] = '(' + tem_[indexZero] + ')';
+	console.log(tem_);
+
 	return [('{' + tem_.join(' ') + '}'), seq.lower, topIndex];
 }
 
@@ -386,6 +390,7 @@ function SumConCircular(seq, fn, gn) {
 		indexAux = (indexAux >= topIndex)? 0: indexAux;
 	}
 	tem_[indexZero] = '(' + tem_[indexZero] + ')';
+	console.log(tem_);
 	return [('{' + tem_.join(' ') + '}'), seq.lower, topIndex];
 }
 
