@@ -73,6 +73,11 @@ a.brand-logo img{
 	width: 100%;
 }
 
+.options_mic  img{
+	height: auto;
+	width: 25vh;
+}
+
 .mic img{
 	height: auto;
 	width: 20vw;
@@ -239,8 +244,17 @@ a.brand-logo img{
 	}
 
 	.options_mic{
-		grid-column: 2;
+		grid-column: 2/4;
 		grid-row: 2;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.sliders{
+		grid-column: 1/4;
+		grid-row: 3;
 		display: flex;
 		justify-content: center;
 		flex-direction: column;

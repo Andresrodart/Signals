@@ -1,6 +1,26 @@
 var data = {}
 var url = '/';
 var interType = 'S';
+var audio;
+var sound, mySound;
+var soundFile;
+function setup(){// create an audio in
+	mic = new p5.AudioIn();
+
+	// users must manually enable their browser microphone for recording to work properly!
+	mic.start();
+
+	// create a sound recorder
+	recorder = new p5.SoundRecorder();
+
+	// connect the mic to the recorder
+	recorder.setInput(mic);
+
+	// create an empty sound file that we will use to playback the recording
+	soundFile = new p5.SoundFile();
+}
+
+const audioChunks = [];
 
 function showInput(){
 	fade(document.getElementById('main'), document.getElementById('User'));
@@ -66,47 +86,52 @@ function sendData() {
 	.catch(error => alert('Hubo un erro verifique que ingreso los datos necesarios de manera correcta'))
 	.then(response => {
 		var trace1 = {
-			x: Object.keys(response.fn).sort((a, b) => {
-				return parseInt(a) - parseInt(b);
-			}),
-			y: Object.values(response.fn).sort((a, b) => {
-				return parseInt(a) - parseInt(b);
-			}),
+			x: Object.keys(response.fn),
+			y: Object.values(response.fn),
 			mode: 'markers',
 			name: 'fn',
 			type: 'scatter'
 		  };
+		if(response.gn){
+			var trace2 = {
+				x: Object.keys(response.gn),
+				y: Object.values(response.gn),
+				mode: 'markers',
+				name: 'gn',
+				type: 'scatter',
+				marker: { size: 12 }
+			};	  
+		}
 		  
-		  var trace2 = {
-			x: Object.keys(response.gn).sort((a, b) => {
-				return parseInt(a) - parseInt(b);
-			}),
-			y: Object.values(response.gn).sort((a, b) => {
-				return parseInt(a) - parseInt(b);
-			}),
-			mode: 'markers',
-			name: 'gn',
-			type: 'scatter',
-			marker: { size: 12 }
-		  };
 		  
-		  var trace3 = {
-			x: Object.keys(response.resS).sort((a, b) => {
-				return parseInt(a) - parseInt(b);
-			}),
-			y: Object.values(response.resS).sort((a, b) => {
-				return parseInt(a) - parseInt(b);
-			}),
+		var trace3 = {
+			x: Object.keys(response.resS),
+			y: Object.values(response.resS),
 			mode: 'markers',
 			name: 'res',
 			type: 'scatter',
 			marker: { size: 12 }
-		  };
-		  
-		  	var data = [trace1, trace2, trace3];
-		  	var lay = {
-				shapes: []
-			  }
+		};
+		if(response.gn)
+			var data = [trace1, trace2, trace3];
+		else
+			var data = [trace1, trace3];
+		var lay = {
+			shapes: []
+		}
+		for (let index = 0; index < trace3.x.length; index++) {
+			lay.shapes.push({
+				type: 'line',
+				x0: trace3.x[index],
+				y0: 0,
+				x1: trace3.x[index],
+				y1: trace3.y[index],
+				line: {
+					color: 'rgb(255, 128, 191)',
+					width: 3
+				}
+			})
+		}
 		for (let index = 0; index < trace1.x.length; index++) {
 			lay.shapes.push({
 				type: 'line',
@@ -118,38 +143,27 @@ function sendData() {
 					color: 'rgb(55, 128, 191)',
 					width: 3
 				}
-				})
+			})
 		}
+		if(response.gn){
+			for (let index = 0; index < trace2.x.length; index++) {
+				lay.shapes.push({
+					type: 'line',
+					x0: trace2.x[index],
+					y0: 0,
+					x1: trace2.x[index],
+					y1: trace2.y[index],
+					line: {
+						color: 'rgb(55, 128, 191)',
+						width: 3
+					}
+				})
+			}	  
+		}
+		
 		  
-		for (let index = 0; index < trace2.x.length; index++) {
-			lay.shapes.push({
-				type: 'line',
-				x0: trace2.x[index],
-				y0: 0,
-				x1: trace2.x[index],
-				y1: trace2.y[index],
-				line: {
-					color: 'rgb(55, 128, 191)',
-					width: 3
-				}
-				})
-		}
-		for (let index = 0; index < trace3.x.length; index++) {
-			lay.shapes.push({
-				type: 'line',
-				x0: trace3.x[index],
-				y0: 0,
-				x1: trace3.x[index],
-				y1: trace3.y[index],
-				line: {
-					color: 'rgb(55, 128, 191)',
-					width: 3
-				}
-				})
-		}
-		  
-		  Plotly.newPlot('plot', data, lay);
-		console.log('Success:', response);
+		Plotly.newPlot('plot', data, lay);
+		console.log('Success:', response, data);
 		document.getElementById('respuesta').innerHTML = 'Respuesta: ' + response.res
 	});
 }
@@ -224,21 +238,44 @@ function neq(){
 	sendData();
 }
 
+function diezMic() {
+	// speed = constrain(.5, 0.01, 4);
+	document.getElementById('playRecording').src = '../images/PlayU.svg'
+	soundFile.rate(document.getElementById("diez").value);
+	soundFile.play();
+}
+
+function interMic() {
+	// speed = constrain(.5, 0.01, 4);
+	document.getElementById('playRecording').src = '../images/PlayU.svg'
+	soundFile.rate(document.getElementById("inter").value);
+	soundFile.play();
+}
+
+function neqMic() {
+	// speed = constrain(.5, 0.01, 4);
+	document.getElementById('playRecording').src = '../images/PlayU.svg'
+	soundFile.rate(1);
+	soundFile.reverseBuffer();
+	soundFile.play();
+}
+
 function startRecording(){
-	navigator.mediaDevices.getUserMedia({ audio: true })
-	.then(stream => {
-		const mediaRecorder = new MediaRecorder(stream);
-		mediaRecorder.start();
+	document.getElementById('startRecording').src = '../images/micButU.svg'
+	document.getElementById('playRecording').src = '../images/PlayU.svg'
+		
+	recorder.record(soundFile);
+	
+	setTimeout(() => {
+		recorder.stop();
+		alert('Se acabo de grabar');
+		document.getElementById('startRecording').src = '../images/micBut.svg';
+		document.getElementById('playRecording').src = '../images/Play.svg';
+    }, 5000);
+}
 
-		const audioChunks = [];
-
-		mediaRecorder.addEventListener("dataavailable", event => {
-		audioChunks.push(event.data);
-		});
-
-		setTimeout(() => {
-			mediaRecorder.stop();
-			console.log(audioChunks);
-		}, 3000);
-	}).catch(err => console.log(error));
+function playRecording() {
+	soundFile.rate(1);
+	soundFile.play();
+	//audio.play();
 }

@@ -107,9 +107,20 @@ block content
 					h2 Da click al icono para iniciar a grabar
 				.mic
 					.inputSel(onclick='startRecording()')
-						img(src="../images/micBut.svg", alt="", srcset="")
+						img(src="../images/micBut.svg", alt="", srcset="" id='startRecording')
+					.inputSel(onclick='playRecording()')
+						img(src="../images/PlayU.svg", alt="", srcset="" id='playRecording')
 				.options_mic
 					.inputSel(onclick='diezMic()')
 						img(src="../images/diez.svg", alt="", srcset="")
 					.inputSel(onclick='interMic()')
 						img(src="../images/inter.svg", alt="", srcset="")
+					.inputSel(onclick='neqMic()')
+						img(src="../images/neq.svg", alt="", srcset="")
+				.sliders
+					p#range-field
+						h5 Diezmación
+						input(type="range" id="diez" min="1" max="4" step="0.1")
+					p#range-field
+						h5 Interpolación
+						input(type="range" id="inter" min="0.1" max="1" step="0.1")

@@ -288,7 +288,8 @@ function inteSeq(a, lower, upper, K, iType) { // Interpolación
 		else { //Si es elemento existente en la sequencia original
 			newSeq[i] = a[realIndex];
 			realIndex += 1;
-		}
+		};
+	console.log(newSeq)
 	return newSeq;
 }
 
@@ -298,20 +299,21 @@ function getNewElement(iType, a, realIndex, K, newSeq, i) {
 		return 0;
 	else if (iType == 'S') //Interpolación a Escalon
 		return a[realIndex];
-	else if (iType == 'L') //Interpolación Lineal
-		if (!(Math.abs(a[realIndex]) / K)) { //Si los elementos a tomar no son los ultimos
+	else if (iType == 'L'){ //Interpolación Lineal
+		if(!isNaN(Math.abs(a[realIndex] - a[realIndex + 1]) / K)){ //Si los elementos a tomar no son los ultimos
 			tearedElement =  Math.abs(a[realIndex] - a[realIndex + 1]) / K; //Aplicando Formula: Ni +|i abs(Nf - Ni)/K
 			if (a[realIndex] > a[realIndex + 1]) //Condicion de Nf < Ni
 				return newSeq[i - 1]  - tearedElement;
 			else //Condicion de Nf > Ni
 				return newSeq[i - 1]  + tearedElement;
-		} else { //Si son los ultimos
+		}else{ //Si son los ultimos
 			tearedElement =  Math.abs(a[realIndex]) / K;
 			if (a[realIndex] > 0) //Condicion de Nf < Ni
 				return newSeq[i - 1]  - tearedElement;
 			else //Condicion de Nf > Ni
 				return newSeq[i - 1]  + tearedElement;
 		}
+	}
 }
 
 
