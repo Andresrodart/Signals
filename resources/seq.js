@@ -365,10 +365,9 @@ function conSeq(a, lowerA, upperA, b, lowerB, upperB) {
 	return newSeq;
 }
 
-function SumConperiodica(seq, fn, gn) {
-	let tem_ = null;
-	let indexZero = Math.abs(seq.lower);
-	let indexAux = 0, topIndex = Math.max(fn, gn);
+function SumConperiodica(seq, seqLen) {
+	console.log(seq);
+	let tem_ = null, indexZero = Math.abs(seq.lower), indexAux = 0, topIndex = seqLen;
 	tem_ = new Array(topIndex).fill(0);
 	for (let index = seq.lower; index <= seq.upper; index++) {
 		tem_[indexAux++] += seq.sequence[index];

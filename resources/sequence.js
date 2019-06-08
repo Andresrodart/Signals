@@ -4,7 +4,7 @@ const sq = require('./seq')
 class Sequence {
 	constructor(string, periodic = false) {
 		this.sequence = sq.createSeq(string);
-		this.periodic = periodic;
+		this.isPeriodic = periodic;
 		this.lower =  parseInt(Object.keys(this.sequence).sort((a, b) => {
 			return parseInt(a) - parseInt(b);
 		})[0]);
@@ -31,11 +31,11 @@ class Sequence {
 		console.log(res)
 		if (this.periodic && g.periodic)
 			return new Sequence(sq.SumConCircular(res, this.getLength, g.getLength)[0]);
-		else if(this.periodic || g.periodic){
-			opt =  new Sequence(sq.SumConperiodica(res, this.getLength, g.getLength)[0]);
-			console.log(opt)
-			return opt
-		}else
+		else if(this.isPeriodic && !g.isPeriodic)
+			return new Sequence(sq.SumConperiodica(res, this.getLength, g.getLength)[0]);
+		else if(!this.isPeriodic && g.isPeriodic)
+			new Sequence(sq.SumConperiodica(res, g.getLength, this.getLength)[0]);
+		else
 			return res;
 	}
 	

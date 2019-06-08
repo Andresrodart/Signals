@@ -10,25 +10,20 @@ var context;
 
 function setup(){// create an audio in
 	mic = new p5.AudioIn();
-
 	// users must manually enable their browser microphone for recording to work properly!
 	mic.start();
-
 	// create a sound recorder
 	recorder = new p5.SoundRecorder();
-
 	// connect the mic to the recorder
 	recorder.setInput(mic);
-
 	// create an empty sound file that we will use to playback the recording
 	soundFile = new p5.SoundFile();
 }
 
-const audioChunks = [];
-
 function showInput(){
 	fade(document.getElementById('main'), document.getElementById('User'));
 }
+
 function showMicrophone(){
 	fade(document.getElementById('main'), document.getElementById('Mic'));
 }
@@ -72,20 +67,13 @@ function typeInter() {
 	}
 }
 
-function getSec(){
-	data['fn'] = document.getElementById('fn').value;
-	data['gn'] = document.getElementById('gn').value;
-	data['gnP'] = (document.getElementById('perioB').checked)? true:false;
-	data['fnP'] = (document.getElementById('perioA').checked)? true:false;
-}
-
 function sendData() {
 	fetch(url, {
 		method: 'POST', // or 'PUT'
 		body: JSON.stringify(data), // data can be `string` or {object}!
 		headers:{
-		'Content-Type': 'application/json'
-	}
+			'Content-Type': 'application/json'
+		}
 	}).then(res => res.json())
 	.catch(error => alert('Hubo un erro verifique que ingreso los datos necesarios de manera correcta'))
 	.then(response => {
@@ -170,6 +158,13 @@ function sendData() {
 		console.log('Success:', response, data);
 		document.getElementById('respuesta').innerHTML = 'Respuesta: ' + response.res
 	});
+}
+
+function getSec(){
+	data['fn'] = document.getElementById('fn').value;
+	data['gn'] = document.getElementById('gn').value;
+	data['gnP'] = (document.getElementById('perioB').checked)? true:false;
+	data['fnP'] = (document.getElementById('perioA').checked)? true:false;
 }
 
 function suma(){
